@@ -1,6 +1,0 @@
-/env
-/keys
-/.git
-/.idea
-db.sqlite3
-*.pyc
