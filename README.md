@@ -1,8 +1,8 @@
 ![Lesib](http://i.hizliresim.com/BvyJJQ.jpg)
 ----
-Lesib is a Turkish NLP project which aims to find question of the given sentence.
+**Lesib** is a Turkish NLP project which aims to find question of the given sentence.
 
 ## How it works
 
-- It uses ITU NLP Tool for morphologic and part of speech tagging.
-- Convert to question based on set of rules.
+- Uses ITU NLP Tool for morphologic analysis and part of speech tagging.
+- Convert the given sentence to question accordingly set of rules based on morphologic analysis and part of speech tagging.
