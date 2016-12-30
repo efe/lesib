@@ -1,10 +1,8 @@
-import requests
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from keys.ITU_API_KEY import ITU_API_KEY
 from words.signals import initialize_words
-from sentences.signals import set_of_rules
+from sentences.signals import set_of_rules, get_query_body
 
 
 class Sentence(models.Model):
@@ -15,18 +13,6 @@ class Sentence(models.Model):
 
     def __str__(self):
         return self.content
-
-    def save(self, *args, **kwargs):
-
-        if not self.id:  # For Less API Request to ITU Tool.
-            self.query_body = self.get_query_body()
-
-        super(Sentence, self).save(*args, **kwargs)
-
-    def get_query_body(self):
-        tool = 'pipelineNoisy'
-        url = 'http://tools.nlp.itu.edu.tr/SimpleApi?tool=%s&input=%s&token=%s' % (tool, self.content, ITU_API_KEY)
-        return requests.get(url).text
 
     def ask(self, question_type, changed_word):
         question = self.content
@@ -44,6 +30,7 @@ class Sentence(models.Model):
         else:
             return self.words.filter(content_type=content_type, tag=tag, morphology__contains=morphology).first()
 
+models.signals.post_save.connect(get_query_body, sender=Sentence)
 models.signals.post_save.connect(initialize_words, sender=Sentence)
 models.signals.post_save.connect(set_of_rules, sender=Sentence)
 
